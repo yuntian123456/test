@@ -12,3 +12,6 @@
 
 # Modify default IP
 sed -i 's/192.168.1.1/192.168.16.123/g' package/base-files/files/bin/config_generate
+
+# 修改Files大法权限
+#chmod -R 755 files
