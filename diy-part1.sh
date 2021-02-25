@@ -15,3 +15,6 @@
 
 # Add a feed source
 #sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
+
+#Add new KPR
+#sed -i '$a src-git project-lede https://github.com/godros/luci-app-godproxy.git' feeds.conf.default
