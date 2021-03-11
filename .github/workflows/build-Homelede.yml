@@ -102,6 +102,7 @@ jobs:
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
+        echo "::set-output name=status::success"
         
     - name: Wechat ⑨微信通知
       uses: emon100/Action-Serverchan@v2
@@ -109,7 +110,7 @@ jobs:
       with:
         SCKEY: ${{ secrets.SCKEY }}
         text: Github Action编译开始啦
-        desp: 要编译的固件正在开始编译,请耐心等待......地址：$Github_url
+        desp: 您要编译的固件正在开始编译,请耐心等待......O(∩_∩)O 查看：${{ env.Github_url }}
 
     - name: Compile the firmware ⑩开始编译
       id: compile
@@ -175,7 +176,6 @@ jobs:
         touch release.txt
         [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 [Cowtransfer](${{ steps.cowtransfer.outputs.url }})" >> release.txt
         [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
-        echo "::set-output name=status::success"
 
     - name: Upload firmware to release （18）上传到release
       uses: softprops/action-gh-release@v1
@@ -204,16 +204,16 @@ jobs:
         
     - name: Webchat inform (21) 微信通知
       uses: emon100/Action-Serverchan@v2
-      if: steps.tag.outputs.status == 'success' && !cancelled()
+      if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
         SCKEY: ${{ secrets.SCKEY }}
-        text: 恭喜固件编译成功！
-        desp: 您Github Action自动编译的固件顺利编译完成了！地址：$Github_url
+        text: 恭喜Github Action固件编译成功！
+        desp: 您Github Action自动编译的固件顺利编译完成了！ O(∩_∩)O 查看：${{ env.Github_url }}
         
     - name: Webchat inform (21) 微信通知
       uses: emon100/Action-Serverchan@v2
-      if: steps.tag.outputs.status == 'failure' || cancelled()
+      if: steps.organize.outputs.status != 'success' || cancelled()
       with:
         SCKEY: ${{ secrets.SCKEY }}
-        text: 固件编译失败！
-        desp: 您Github Action自动编译的固件编译失败！地址：$Github_url
+        text: Github Action固件编译失败！
+        desp: 您Github Action自动编译的固件编译失败！ o(╥﹏╥)o 查看：${{ env.Github_url }}
