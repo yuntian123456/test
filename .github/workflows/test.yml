@@ -55,7 +55,7 @@ jobs:
       with:
         SCKEY: ${{ secrets.SCKEY }}
         text: Github Action编译开始啦
-        desp: 要编译的固件正在开始编译,请耐心等待......\n 地址：${{Github_url}}
+        desp: 要编译的固件正在开始编译,请耐心等待......\n 地址：${Github_url}
 
     - name: Compile the firmware ⑩开始编译
       id: compile
