@@ -34,6 +34,7 @@ env:
   UPLOAD_WETRANSFER: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
+  Github_url: https://github.com/yuntian123456/BuildOpenwrt
 
 jobs:
   build:
@@ -108,7 +109,7 @@ jobs:
       with:
         SCKEY: ${{ secrets.SCKEY }}
         text: Github Action编译开始啦
-        desp: 要编译的固件正在开始编译,请耐心等待......地址：https://github.com/yuntian123456/BuildOpenwrt
+        desp: 要编译的固件正在开始编译,请耐心等待......地址：$Github_url
 
     - name: Compile the firmware ⑩开始编译
       id: compile
@@ -207,7 +208,7 @@ jobs:
       with:
         SCKEY: ${{ secrets.SCKEY }}
         text: 恭喜固件编译成功！
-        desp: 您Github Action自动编译的固件顺利编译完成了！地址：https://github.com/yuntian123456/BuildOpenwrt
+        desp: 您Github Action自动编译的固件顺利编译完成了！地址：$Github_url
         
     - name: Webchat inform (21) 微信通知
       uses: emon100/Action-Serverchan@v2
@@ -215,4 +216,4 @@ jobs:
       with:
         SCKEY: ${{ secrets.SCKEY }}
         text: 固件编译失败！
-        desp: 您Github Action自动编译的固件编译失败！地址：https://github.com/yuntian123456/BuildOpenwrt
+        desp: 您Github Action自动编译的固件编译失败！地址：$Github_url
