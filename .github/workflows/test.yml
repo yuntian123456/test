@@ -60,6 +60,8 @@ jobs:
         text: Github Action编译开始啦
         desp: 
              🎈您要编译的固件正在开始编译,请耐心等待......
+             
+
              O(∩_∩)O 查看：${{ env.Github_url }}
 
     - name: Compile the firmware ⑩开始编译
@@ -81,9 +83,12 @@ jobs:
              😄开始Compile时间：${{ steps.package.outputs.Start_time }} 
              
 
-             😊结束Compile时间：${{ steps.compile.outputs.End_time }} 
+             😊结束Compile时间：${{ steps.compile.outputs.End_time }}
+             
 
              O(∩_∩)O 查看结果：${{ env.Github_url }}
+             
+
              O(∩_∩)O 原始仓库：${{ env.REPO_URL }}
              
         
