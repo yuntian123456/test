@@ -1,0 +1,109 @@
+#
+# Copyright (c) 2019-2020 P3TERX <https://p3terx.com>
+#
+# This is free software, licensed under the MIT License.
+# See /LICENSE for more information.
+#
+# https://github.com/P3TERX/Actions-OpenWrt
+# Description: Build OpenWrt using GitHub Actions
+#
+
+name: Build Homelede
+
+on:
+  #repository_dispatch:
+  #schedule:
+    #- cron: 0 */6 * * *
+  workflow_dispatch:
+    inputs:
+      ssh:
+        description: 'SSH connection to Actions'
+        required: false
+        default: 'false'
+
+env:
+  REPO_URL: https://github.com/xiaoqingfengATGH/HomeLede
+  REPO_BRANCH: k5
+  FEEDS_CONF: feeds.conf.default
+  CONFIG_FILE: .config
+  DIY_P1_SH: diy-part1.sh
+  DIY_P2_SH: diy-part2.sh
+  UPLOAD_BIN_DIR: true
+  UPLOAD_FIRMWARE: true
+  UPLOAD_COWTRANSFER: true
+  UPLOAD_WETRANSFER: true
+  UPLOAD_RELEASE: true
+  TZ: Asia/Shanghai
+  Github_url: https://github.com/yuntian123456/BuildOpenwrt
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+           
+    - name: Clone source code ③克隆源码
+      working-directory: /workdir
+      run: |
+        df -hT $PWD
+        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+
+    - name: Download package ⑧下载dl库
+      id: package
+      run: |
+        echo "::set-output name=Start_time::$(date +"%Y.%m.%d-%H:%M:%S")"
+        cd openwrt
+        make defconfig
+        make download -j8
+        find dl -size -1024c -exec ls -l {} \;
+        find dl -size -1024c -exec rm -f {} \;
+        echo "::set-output name=status::success"
+        echo "::set-output name=End_time::$(date +"%Y.%m.%d-%H:%M:%S")"
+        
+    - name: Wechat ⑨微信通知
+      uses: emon100/Action-Serverchan@v2
+      if: steps.package.outputs.status == 'success'
+      with:
+        SCKEY: ${{ secrets.SCKEY }}
+        text: Github Action编译开始啦
+        desp: 
+             🎈您要编译的固件正在开始编译,请耐心等待......
+             O(∩_∩)O 查看：${{ env.Github_url }}
+
+    - name: Compile the firmware ⑩开始编译
+      id: compile
+      run: |
+        cd openwrt
+        echo "::set-output name=status::success"
+
+    - name: Check space usage (11)空间占用检测
+      if: (!cancelled())
+      run: df -hT
+
+        
+    - name: Webchat inform (21) 微信通知
+      uses: emon100/Action-Serverchan@v2
+      if: steps.organize.outputs.status == 'success' && !cancelled()
+      with:
+        SCKEY: ${{ secrets.SCKEY }}
+        text: 恭喜Github Action固件编译成功！
+        desp: 
+             🎈您Github Action自动编译的固件顺利编译完成了！
+             😄开始Compile时间：${{ steps.package.outputs.Start_time }} 
+             😊结束Compile时间：${{ steps.package.outputs.End_time }} 
+             O(∩_∩)O 查看结果：${{ env.Github_url }}
+             O(∩_∩)O 原始仓库：${{ env.REPO_URL }}
+             
+        
+    - name: Webchat inform (21) 微信通知
+      uses: emon100/Action-Serverchan@v2
+      if: steps.organize.outputs.status != 'success' || cancelled()
+      with:
+        SCKEY: ${{ secrets.SCKEY }}
+        text: Github Action固件编译失败！
+        desp: 
+             😂您Github Action自动编译的固件编译失败！ 
+             o(╥﹏╥)o 查看：${{ env.Github_url }}
