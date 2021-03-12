@@ -66,7 +66,7 @@ jobs:
       id: compile
       run: |
         echo "::set-output name=status::success"
-        echo "::set-output name=End_time::$(date +"%Y.%m.%d-%H:%M:%S")
+        echo "::set-output name=End_time::$(date +"%Y.%m.%d-%H:%M:%S")"
 
     - name: Webchat inform (21) 微信通知
       uses: emon100/Action-Serverchan@v2
