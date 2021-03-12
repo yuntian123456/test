@@ -83,7 +83,7 @@ jobs:
 
              😊结束Compile时间：${{ steps.compile.outputs.End_time }} 
 
-             O(∩_∩)O 查看结果：${{ env.Github_url }
+             O(∩_∩)O 查看结果：${{ env.Github_url }}
              O(∩_∩)O 原始仓库：${{ env.REPO_URL }}
              
         
