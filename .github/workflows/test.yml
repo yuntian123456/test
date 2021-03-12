@@ -76,9 +76,14 @@ jobs:
         text: 恭喜Github Action固件编译成功！
         desp: 
              🎈您Github Action自动编译的固件顺利编译完成了！
+             
+
              😄开始Compile时间：${{ steps.package.outputs.Start_time }} 
+             
+
              😊结束Compile时间：${{ steps.compile.outputs.End_time }} 
-             O(∩_∩)O 查看结果：${{ env.Github_url }}
+
+             O(∩_∩)O 查看结果：${{ env.Github_url }
              O(∩_∩)O 原始仓库：${{ env.REPO_URL }}
              
         
