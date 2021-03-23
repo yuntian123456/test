@@ -11,7 +11,7 @@
 #
 
 # Modify default IP
-sed -i 's/192.168.1.1/192.168.16.123/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.16.251/g' package/base-files/files/bin/config_generate
 
 # Generate rootfs.tar.gz file
 sed -i 's/\# CONFIG_TARGET_ROOTFS_TARGZ is not set/CONFIG_TARGET_ROOTFS_TARGZ=y/g' .config
