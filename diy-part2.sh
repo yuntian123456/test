@@ -17,4 +17,4 @@ sed -i 's/192.168.1.1/192.168.16.251/g' package/base-files/files/bin/config_gene
 sed -i 's/\# CONFIG_TARGET_ROOTFS_TARGZ is not set/CONFIG_TARGET_ROOTFS_TARGZ=y/g' .config
 
 # 修改Files大法权限
-#chmod -R 755 files
+chmod -R 755 files
