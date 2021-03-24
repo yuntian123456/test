@@ -147,7 +147,7 @@ jobs:
       run: |
         echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
         touch release.txt
-        cat openwrt/package/base-files/files/etc/banner >> release.txt
+        cat openwrt/package/base-files/files/etc/banner | awk 'END {print} >> release.txt
         #echo "${{ steps.package.outputs.version }}" >> release.txt
         [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 [Cowtransfer](${{ steps.cowtransfer.outputs.url }})" >> release.txt
         [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
