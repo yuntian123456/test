@@ -103,7 +103,6 @@ jobs:
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
         echo "::set-output name=status::success"
-        echo "::set-output name=version::$(cat ./package/base-files/files/etc/banner)"
         
     - name: Wechat ⑨微信通知
       uses: emon100/Action-Serverchan@v2
@@ -181,7 +180,8 @@ jobs:
       run: |
         echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
         touch release.txt
-        echo "${{ steps.package.outputs.version }}" >> release.txt
+        cat openwrt/package/base-files/files/etc/banner | head -n 8 | tail -n +8 >> release.txt
+        echo "🚩🚩 [🚩](${{ env.REPO_URL }})" >> release.txt
         [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 [Cowtransfer](${{ steps.cowtransfer.outputs.url }})" >> release.txt
         [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
         echo "::set-output name=status::success"
